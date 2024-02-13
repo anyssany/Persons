@@ -1,0 +1,39 @@
+﻿<script type="text/javascript">
+    function deletePerson(id) {
+        $.ajax({
+            type: 'POST',
+            url: '/Person/Delete',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8', 
+            data: { id: id},
+            success: function (result) {
+                window.location = result.url;
+            }
+        })
+    }
+
+</script>
+<div class="album py-2 bg-light">
+    <div class="container">
+        <a type="button" asp-controller="person" asp-action="Create" class="btn btn-sm btn-outline-success my-sm-3">Добавить</a>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-body">
+                            <p class="card-text">@item.Name @item.Surname</p>                            
+                            <a type="button" asp-controller="person" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary mr-2">Открыть</a>
+                            <a type="button" asp-controller="person" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-success mr-2">Изменить</a>
+                            <a type="button" onclick="deletePerson(@item.Id)" class="btn btn-sm btn-outline-danger">Удалить</a>                           
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
